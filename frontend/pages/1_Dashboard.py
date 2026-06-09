@@ -2,7 +2,8 @@ import streamlit as st
 import requests
 import plotly.graph_objects as go
 
-API_URL = "http://127.0.0.1:8000/api/v1"
+import os
+API_URL = os.getenv("BACKEND_API_URL", "http://127.0.0.1:8000/api/v1")
 
 st.set_page_config(page_title="Dashboard", page_icon="📊", layout="wide")
 

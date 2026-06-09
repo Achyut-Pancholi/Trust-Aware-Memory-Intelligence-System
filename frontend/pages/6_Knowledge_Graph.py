@@ -5,7 +5,8 @@ import streamlit as st
 import requests
 import streamlit.components.v1 as components
 
-API_URL = "http://127.0.0.1:8000/api/v1"
+import os
+API_URL = os.getenv("BACKEND_API_URL", "http://127.0.0.1:8000/api/v1")
 
 st.set_page_config(page_title="Knowledge Graph", page_icon="🕸️", layout="wide")
 
