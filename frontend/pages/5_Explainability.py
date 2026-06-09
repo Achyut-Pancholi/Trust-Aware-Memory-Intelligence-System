@@ -6,7 +6,7 @@ import requests
 import streamlit.components.v1 as components
 from frontend.components.visualizations import create_provenance_graph
 
-API_URL = "http://localhost:8000/api/v1"
+API_URL = "http://127.0.0.1:8000/api/v1"
 
 st.set_page_config(page_title="Explainability", page_icon="🔍", layout="wide")
 

@@ -6,7 +6,7 @@ import requests
 import plotly.graph_objects as go
 import pandas as pd
 
-API_URL = "http://localhost:8000/api/v1"
+API_URL = "http://127.0.0.1:8000/api/v1"
 
 st.set_page_config(page_title="Evolution Timeline", page_icon="📈", layout="wide")
 

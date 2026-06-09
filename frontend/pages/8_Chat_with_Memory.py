@@ -81,7 +81,7 @@ if prompt := st.chat_input("Ask about verified facts (e.g. 'When is GPT-5 releas
             try:
                 # Call backend API
                 response = requests.post(
-                    "http://localhost:8000/api/v1/chat", 
+                    "http://127.0.0.1:8000/api/v1/chat", 
                     json={"query": prompt},
                     timeout=30
                 )
