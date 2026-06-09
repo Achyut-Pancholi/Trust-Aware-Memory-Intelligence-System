@@ -6,7 +6,7 @@ import os
 
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from frontend.startup import ensure_backend_running
+from frontend.startup import ensure_backend_running, is_port_in_use
 ensure_backend_running()
 
 import streamlit as st
