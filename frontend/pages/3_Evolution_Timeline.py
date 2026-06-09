@@ -207,22 +207,26 @@ try:
                 expand_html = ""
                 if needs_expand:
                     expand_html = f'<details class="expand-reason"><summary>View full reason</summary><div class="full-text">{reason}</div></details>'
+                else:
+                    # Keep it empty without introducing blank lines in the HTML string
+                    expand_html = ""
                 
-                st.markdown(f"""
-                <div class="action-timeline-card" style="border-left-color: {style['color']};">
-                    <div class="atc-header">
-                        <span class="atc-action" style="background: {style['bg']}; color: {style['color']};">
-                            {style['icon']} {action}
-                        </span>
-                        <span class="atc-time">{log.get("timestamp", "")[:19]}</span>
-                    </div>
-                    <div class="atc-reason">{short_reason}{"..." if needs_expand else ""}</div>
-                    {expand_html}
-                    <div class="atc-delta" style="color: {delta_color};">
-                        Δ Confidence: {delta_str} &nbsp;|&nbsp; Claim: {log.get("claim_id", "—")}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                html_content = (
+                    f'<div class="action-timeline-card" style="border-left-color: {style["color"]};">'
+                    f'    <div class="atc-header">'
+                    f'        <span class="atc-action" style="background: {style["bg"]}; color: {style["color"]};">'
+                    f'            {style["icon"]} {action}'
+                    f'        </span>'
+                    f'        <span class="atc-time">{log.get("timestamp", "")[:19]}</span>'
+                    f'    </div>'
+                    f'    <div class="atc-reason">{short_reason}{"..." if needs_expand else ""}</div>'
+                    f'    {expand_html}'
+                    f'    <div class="atc-delta" style="color: {delta_color};">'
+                    f'        Δ Confidence: {delta_str} &nbsp;|&nbsp; Claim: {log.get("claim_id", "—")}'
+                    f'    </div>'
+                    f'</div>'
+                )
+                st.markdown(html_content, unsafe_allow_html=True)
         else:
             st.info("No evolution history found. Run the demo to generate data.")
     else:
