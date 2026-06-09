@@ -9,6 +9,10 @@ from backend.database.repository import (
 from backend.schemas.pydantic_models import ClaimInput, MemoryEntryResponse, ChangeLogResponse, ExplainabilityResponse
 from backend.agents.workflow import process_claim_workflow
 from backend.services.explainability import generate_explanation
+from pydantic import BaseModel
+
+class ChatQuery(BaseModel):
+    query: str
 
 router = APIRouter()
 
@@ -65,4 +69,33 @@ def reset_database_endpoint(db: Session = Depends(get_db)):
     from backend.database.repository import clear_database
     clear_database(db)
     return {"message": "Database reset successfully"}
+
+@router.post("/chat")
+def chat_with_memory(chat_query: ChatQuery, db: Session = Depends(get_db)):
+    memories = get_all_memory_entries(db, skip=0, limit=200)
+    
+    from backend.core.config import settings
+    from langchain_groq import ChatGroq
+    from langchain_core.messages import HumanMessage
+    
+    memory_context = "\n".join([f"- {m.subject} {m.predicate} {m.object} (Confidence: {m.confidence:.2f}, Sources: {m.sources})" for m in memories])
+    
+    prompt = f"""You are a helpful and highly accurate AI assistant running on a "Trust-Aware Memory" system.
+Your memory database contains verified facts.
+Answer the user's question using ONLY the facts provided below.
+If the facts don't contain the answer or the context is empty, say "I don't have verified information regarding that."
+DO NOT hallucinate external knowledge. Always cite the confidence score and sources if you provide an answer.
+
+VERIFIED FACTS:
+{memory_context}
+
+USER QUESTION:
+{chat_query.query}
+"""
+    try:
+        llm = ChatGroq(temperature=0, model_name=settings.LLM_MODEL, groq_api_key=settings.GROQ_API_KEY)
+        response = llm.invoke([HumanMessage(content=prompt)])
+        return {"answer": response.content}
+    except Exception as e:
+        return {"answer": f"Error generating response: {str(e)}"}
 
