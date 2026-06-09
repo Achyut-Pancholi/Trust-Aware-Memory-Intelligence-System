@@ -23,11 +23,12 @@ def curate_memory_node(state: AgentState) -> AgentState:
     
     if settings.GROQ_API_KEY:
         try:
+            from backend.core.llm_helper import invoke_llm_with_retry
             llm = ChatGroq(temperature=0, model_name=settings.LLM_MODEL, groq_api_key=settings.GROQ_API_KEY)
             prompt = PromptTemplate.from_template(CURATOR_PROMPT)
             chain = prompt | llm
             
-            response = chain.invoke({
+            response = invoke_llm_with_retry(chain, {
                 "claim": claim.dict(),
                 "extracted": extracted,
                 "verification": verification,

@@ -22,11 +22,12 @@ def verify_claim_node(state: AgentState) -> AgentState:
         }
 
     try:
+        from backend.core.llm_helper import invoke_llm_with_retry
         llm = ChatGroq(temperature=0, model_name=settings.LLM_MODEL, groq_api_key=settings.GROQ_API_KEY)
         prompt = PromptTemplate.from_template(VERIFICATION_PROMPT)
         chain = prompt | llm
         
-        response = chain.invoke({
+        response = invoke_llm_with_retry(chain, {
             "claim_text": claim.claim,
             "source": claim.source_id,
             "source_reliability": claim.source_reliability

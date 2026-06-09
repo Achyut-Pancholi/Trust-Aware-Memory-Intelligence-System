@@ -35,14 +35,22 @@ Verification: {verification}
 Trust Score: {trust_score}
 Contradictions/Existing: {contradictions}
 
-Decide the action to take.
-Actions: ACCEPTED, UPDATED, DOWNGRADED, REJECTED, FORGOTTEN, MERGED
+Decide the action to take. You MUST choose one of the following Actions based on the criteria:
+
+1. ACCEPTED: Use when there is NO existing memory matching the subject and predicate.
+2. UPDATED: Use when the new claim has a DIFFERENT object than the existing memory, and the new claim has a HIGH trust score/source reliability (>= 0.7) that is higher than or comparable to the existing memory, so we want to REPLACE the old object with the new object.
+3. DOWNGRADED: Use when the new claim contradicts the existing memory (different object) but has a LOW or MEDIUM trust score/source reliability (e.g. between 0.3 and 0.6) compared to the existing memory. We want to keep the existing memory, but DECREASE its confidence score (confidence_delta must be negative, e.g. -0.1 to -0.2).
+4. REJECTED: Use when the new claim is completely untrustworthy (low reliability, e.g. < 0.3) or does not meet minimum trust criteria, and contradicts a much more trusted existing memory.
+5. FORGOTTEN: Use when a highly reliable new claim (trust score >= 0.8) completely contradicts a weak, low-confidence existing memory (confidence < 0.7), indicating the old memory is completely obsolete. The existing memory will be set to forgotten.
+6. MERGED: Use when the new claim has the SAME or semantically identical object as the existing memory (corroboration). We want to keep the memory and INCREASE its confidence (confidence_delta must be positive, e.g. 0.05 to 0.15) to reinforce the belief.
+
+CRITICAL RULE: If the list of Contradictions/Existing memories is empty ([]) or null, you can ONLY choose 'ACCEPTED' or 'REJECTED'. You must NEVER choose 'UPDATED', 'DOWNGRADED', 'FORGOTTEN', or 'MERGED' if there are no existing memories listed.
 
 Output valid JSON only:
 {{
     "action": "ACTION_NAME",
-    "reason": "Detailed reason for the decision",
-    "confidence_delta": float (change in confidence for the memory entry, usually 0.0 for ACCEPTED or REJECTED, positive or negative for updates)
+    "reason": "Detailed reason for the decision based on the criteria",
+    "confidence_delta": float (positive float for MERGED/UPDATED/corroborations, negative float for DOWNGRADED, 0.0 for ACCEPTED/REJECTED/FORGOTTEN)
 }}
 """
 

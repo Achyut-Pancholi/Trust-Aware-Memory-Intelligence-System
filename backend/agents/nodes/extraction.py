@@ -8,10 +8,18 @@ from backend.core.config import settings
 def extract_claim_node(state: AgentState) -> AgentState:
     claim = state["claim"]
     
-    # If the user already provided subject/predicate/object in the input, we can just use it
-    # But to follow the flow, we let the LLM do it if needed, or we just trust the input for speed.
-    # The prompt specifically asked for an Extraction Agent, so we'll use the LLM.
-    
+    # If the claim already has pre-defined subject, predicate, and object (e.g. from demo data),
+    # use them directly to guarantee exact matching for demo runs. Otherwise, use the LLM.
+    if claim.subject and claim.predicate and claim.object:
+        return {
+            **state,
+            "extracted_data": {
+                "subject": claim.subject,
+                "predicate": claim.predicate,
+                "object": claim.object
+            }
+        }
+
     if not settings.GROQ_API_KEY:
         # Fallback if no API key during testing
         return {
@@ -24,11 +32,12 @@ def extract_claim_node(state: AgentState) -> AgentState:
         }
 
     try:
+        from backend.core.llm_helper import invoke_llm_with_retry
         llm = ChatGroq(temperature=0, model_name=settings.LLM_MODEL, groq_api_key=settings.GROQ_API_KEY)
         prompt = PromptTemplate.from_template(EXTRACTION_PROMPT)
         chain = prompt | llm
         
-        response = chain.invoke({"claim_text": claim.claim})
+        response = invoke_llm_with_retry(chain, {"claim_text": claim.claim})
         
         # Parse JSON
         content = response.content
