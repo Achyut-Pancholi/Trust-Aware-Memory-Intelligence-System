@@ -12,6 +12,7 @@ Claim: {claim_text}
 
 VERIFICATION_PROMPT = """
 You are an AI tasked with analyzing the internal consistency and verifiability of a claim, and the reliability of its source.
+IMPORTANT: Treat announcements about future events (e.g. "Product X launches in 2026") as verifiable claims if they come from a reliable source. Do not reject claims simply because they occur in the future. Your verification confidence should heavily rely on the provided source_reliability.
 Assess the following claim:
 Claim: {claim_text}
 Source: {source}
