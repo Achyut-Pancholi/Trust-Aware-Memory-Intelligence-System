@@ -1,6 +1,6 @@
 # Trust-Aware Memory Intelligence System
 
-Live URL : https://trust-aware-memory-intelligence-system-44.streamlit.app/Dashboard
+Live URL : https://trust-aware-memory-intelligence-system-44.streamlit.app/
 
 A multi-agent memory intelligence system designed to ingest noisy, conflicting, evolving claims and convert them into a trusted memory store. 
 
