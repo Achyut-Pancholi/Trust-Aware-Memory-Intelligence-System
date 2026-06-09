@@ -1,0 +1,50 @@
+[
+  {
+    "id": "C001",
+    "timestamp": "2024-01-01T10:00:00Z",
+    "source_id": "TechCrunch",
+    "source_reliability": 0.8,
+    "verifiable": "VERIFIABLE",
+    "label": "SUPPORTS",
+    "claim": "Startup A raised $5M in 2021",
+    "subject": "Startup A",
+    "predicate": "raised_funding",
+    "object": "$5M"
+  },
+  {
+    "id": "C002",
+    "timestamp": "2024-01-02T11:00:00Z",
+    "source_id": "TechCrunch",
+    "source_reliability": 0.9,
+    "verifiable": "VERIFIABLE",
+    "label": "SUPPORTS",
+    "claim": "Startup A raised $8M in 2021",
+    "subject": "Startup A",
+    "predicate": "raised_funding",
+    "object": "$8M"
+  },
+  {
+    "id": "C003",
+    "timestamp": "2024-01-03T12:00:00Z",
+    "source_id": "Crunchbase",
+    "source_reliability": 0.85,
+    "verifiable": "VERIFIABLE",
+    "label": "SUPPORTS",
+    "claim": "Startup A raised $8M",
+    "subject": "Startup A",
+    "predicate": "raised_funding",
+    "object": "$8M"
+  },
+  {
+    "id": "C004",
+    "timestamp": "2024-01-04T09:00:00Z",
+    "source_id": "RandomBlog",
+    "source_reliability": 0.3,
+    "verifiable": "VERIFIABLE",
+    "label": "REFUTES",
+    "claim": "Startup A failed to raise any funding",
+    "subject": "Startup A",
+    "predicate": "raised_funding",
+    "object": "$0"
+  }
+]

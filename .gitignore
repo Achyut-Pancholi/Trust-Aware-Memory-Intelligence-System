@@ -1,0 +1,33 @@
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database
+*.sqlite3
+*.db
+memory_store.db
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary Word files
+~$*.docx
+
+# Streamlit config (if you don't want to push it)
+# .streamlit/
+
+# IDE files
+.vscode/
+.idea/
+.cursor/

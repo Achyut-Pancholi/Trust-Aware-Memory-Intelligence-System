@@ -1,0 +1,142 @@
+========================================================================
+TRUST-AWARE MEMORY INTELLIGENCE SYSTEM - STEP-BY-STEP TESTING GUIDE
+========================================================================
+
+Follow these exact steps to test, run, and demonstrate the system.
+
+------------------------------------------------------------------------
+STEP 1: PREPARE YOUR ENVIRONMENT
+------------------------------------------------------------------------
+1. Open a terminal/PowerShell window in the project folder:
+   C:\Users\achyu\Desktop\Hackathon_ITT
+
+2. Activate the virtual environment:
+   .\venv\Scripts\activate
+
+3. Make sure all requirements are installed:
+   pip install -r requirements.txt
+
+4. Double-check your .env file:
+   Ensure it contains your active Groq API Key:
+   GROQ_API_KEY=your_actual_api_key_here
+   LLM_MODEL=llama-3.3-70b-versatile
+
+------------------------------------------------------------------------
+STEP 2: CLEAN START (OPTIONAL BUT RECOMMENDED)
+------------------------------------------------------------------------
+If you want to start with a fresh memory brain:
+1. Delete the "memory_store.db" file in your project folder if it exists.
+   (This resets the database so you can watch the system build memory from scratch!)
+
+------------------------------------------------------------------------
+STEP 3: RUN THE BACKEND (FASTAPI)
+------------------------------------------------------------------------
+1. In your first terminal (with the venv activated), start the backend API:
+   uvicorn backend.main:app --reload
+
+2. Leave this terminal running. It will print logs as claims are processed.
+
+------------------------------------------------------------------------
+STEP 4: RUN THE FRONTEND (STREAMLIT)
+------------------------------------------------------------------------
+1. Open a SECOND terminal window in the project folder.
+2. Activate the virtual environment:
+   .\venv\Scripts\activate
+3. Start the user interface:
+   streamlit run frontend/app.py
+
+4. This will automatically open a browser tab at: http://localhost:8501
+   Keep this tab open.
+
+------------------------------------------------------------------------
+STEP 5: RUN THE DEMO DATA INGESTION
+------------------------------------------------------------------------
+1. Open a THIRD terminal window in the project folder.
+2. Activate the virtual environment:
+   .\venv\Scripts\activate
+3. Run the demo script to send the sample claims to the system:
+   python run_demo.py
+
+4. Watch the terminal output. You should see 4 claims successfully ingested.
+
+------------------------------------------------------------------------
+STEP 6: OBSERVE AND DEMONSTRATE THE RESULTS
+------------------------------------------------------------------------
+Go to the Streamlit app in your browser and explore the pages in the sidebar:
+
+1. DASHBOARD Page:
+   - Verify that the metrics show: 4 Total Claims, and a subset of Active Memories.
+
+2. MEMORY STORE Page:
+   - Look at the table. You will see that the system resolved the conflicting claims about "Startup A". Instead of having multiple entries, it has calculated the single most trustworthy belief based on source reliability.
+
+3. EVOLUTION TIMELINE Page:
+   - Check the interactive line chart showing how confidence shifted over time.
+   - Look at the cards below the chart showing exactly what action was taken for each claim (ACCEPTED, UPDATED, etc.) and the reason why.
+
+4. CHANGE LOG Page:
+   - Look at the immutable history table showing the exact audit trail of all changes.
+
+5. EXPLAINABILITY Page:
+   - Select the "Startup A raised_funding $8M" memory.
+   - Click "Generate Explanation".
+   - Read the AI's explanation. It will summarize:
+     * Why it believes this fact (e.g. backed by high-reliability TechCrunch and Crunchbase).
+     * Which sources it rejected (e.g. RandomBlog).
+     * The confidence timeline.
+     * An interactive flowchart showing the evolution history.
+
+6. KNOWLEDGE GRAPH Page:
+   - View and drag nodes in the interactive network diagram to see the subject-predicate-object relationships.
+
+------------------------------------------------------------------------
+STEP 7: MANUAL VERIFICATION (TESTING A CUSTOM CLAIM)
+------------------------------------------------------------------------
+If you want to manually test a single claim outside the demo script:
+1. Open a tool like Postman or use Python/cURL to send a POST request.
+2. Send a new conflicting claim to: http://localhost:8000/api/v1/claims
+   Example JSON payload:
+   {
+     "id": "C999",
+     "timestamp": "2026-06-09T10:00:00Z",
+     "source_id": "VentureBeat",
+     "source_reliability": 0.95,
+     "verifiable": "VERIFIABLE",
+     "label": "SUPPORTS",
+     "claim": "Startup A raised a total of $10M",
+     "subject": "Startup A",
+     "predicate": "raised_funding",
+     "object": "$10M"
+   }
+3. Go back to Streamlit and see how the memory dynamically updates to $10M because a higher-reliability source (0.95) contradicted the previous $8M belief!
+
+------------------------------------------------------------------------
+STEP 8: COMPREHENSIVE STATE TRANSITION DEMO (FOR HACKATHON JUDGES)
+------------------------------------------------------------------------
+To demonstrate all 6 required state transitions (Accepted, Revised, Downgraded, Rejected, Forgotten, Merged) with at least 2 examples of each:
+
+1. Open your third terminal (with virtual environment activated).
+2. Run the comprehensive script:
+   python run_comprehensive_demo.py
+
+3. This script will automatically:
+   - Reset the database to ensure a clean slate.
+   - Ingest 14 claims in a sequence designed to trigger every memory transition.
+   
+4. Verify the outputs on your Streamlit Dashboard:
+   - ACCEPTED (e.g., Company X launched Product Y, Company Z raised $10M)
+   - UPDATED/REVISED (e.g., CEO of Company X is updated to Bob, Company Z raised $12M)
+   - DOWNGRADED (e.g., Project Alpha downgraded to Proprietary by medium reliability source, CEO Bob downgraded due to conflicting claims)
+   - REJECTED (e.g., Low-reliability claims from SpamBot/TrollAccount trying to inject false information)
+   - FORGOTTEN (e.g., Company W status goes from active to forgotten after high-reliability expansion contradictory reports)
+   - MERGED (e.g., Consolidation of multiple similar inputs for the same fact)
+
+------------------------------------------------------------------------
+STEP 9: USING THE FRONTEND TESTING PLAYGROUND (RECOMMENDED FOR JUDGES)
+------------------------------------------------------------------------
+Instead of running terminal scripts or Postman, you can let judges test the system directly in the browser:
+
+1. Open the Streamlit UI (http://localhost:8501) and navigate to "Testing Playground" in the sidebar.
+2. Under "Walkthrough Scenarios", they can choose a scenario and click "Run Step" to see the step-by-step state transitions, change logs, and reasoning live.
+3. Under "Submit Custom Claim", they can type any custom claim (e.g. "Google acquired GitHub"), choose a reliability score, and see it processed instantly.
+4. They can click "Reset Database" or "Load Comprehensive Demo Data" directly from the UI to start fresh or reload the full test suite.

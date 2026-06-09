@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+sqlalchemy>=2.0.0
+pydantic>=2.0
+pydantic-settings
+langgraph
+langchain
+langchain-groq
+streamlit
+plotly
+networkx
+pyvis
+python-dotenv
+httpx
+pandas
+pytest
+
