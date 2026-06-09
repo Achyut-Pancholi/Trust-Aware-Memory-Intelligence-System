@@ -1,5 +1,8 @@
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from frontend.startup import ensure_backend_running
+ensure_backend_running()
+
 
 import streamlit as st
 import requests

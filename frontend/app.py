@@ -4,20 +4,10 @@ import time
 import socket
 import os
 
-def is_port_in_use(port):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        return s.connect_ex(('127.0.0.1', port)) == 0
-
-# Streamlit Cloud hack: Start the FastAPI backend automatically if it's not running
-try:
-    if not is_port_in_use(8000):
-        root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-        log_path = os.path.join(root_dir, "backend_server.log")
-        log_file = open(log_path, "w")
-        subprocess.Popen([sys.executable, "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"], cwd=root_dir, stdout=log_file, stderr=subprocess.STDOUT)
-        time.sleep(4) # Give it a few seconds to boot up
-except Exception as e:
-    print("Failed to start backend subprocess:", e)
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from frontend.startup import ensure_backend_running
+ensure_backend_running()
 
 import streamlit as st
 
