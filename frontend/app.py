@@ -11,7 +11,8 @@ def is_port_in_use(port):
 # Streamlit Cloud hack: Start the FastAPI backend automatically if it's not running
 if not is_port_in_use(8000):
     root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-    subprocess.Popen([sys.executable, "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"], cwd=root_dir, stdout=sys.stdout, stderr=sys.stderr)
+    log_file = open("backend_server.log", "w")
+    subprocess.Popen([sys.executable, "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"], cwd=root_dir, stdout=log_file, stderr=subprocess.STDOUT)
     time.sleep(4) # Give it a few seconds to boot up
 
 import streamlit as st
