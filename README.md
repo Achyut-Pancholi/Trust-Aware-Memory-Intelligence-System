@@ -12,6 +12,16 @@ The system utilizes:
 - **SQLite + SQLAlchemy ORM** for persistent storage of memories and immutable change logs.
 - **Streamlit** for the frontend dashboard, visualizing trust evolution and provenance via **Plotly**, **PyVis**, and **NetworkX**.
 
+## Features
+- **Dashboard**: Real-time system metrics.
+- **Memory Store**: Browse structured, validated memories.
+- **Evolution Timeline**: See how confidence evolves.
+- **Change Log**: Immutable audit trail of every decision.
+- **Explainability Engine**: Natural language reasoning for why facts were accepted or rejected.
+- **Knowledge Graph**: Interactive network of connected entities.
+- **Interactive Playground**: Simulate real-time claim ingestion.
+- **Chat with Memory**: A conversational agent that *only* answers using verified, trusted facts.
+
 ## Setup & Run Locally
 
 1. Create a virtual environment and install dependencies:
@@ -35,6 +45,3 @@ The system utilizes:
    ```bash
    streamlit run frontend/app.py
    ```
-
-## Development Status
-*Project structure initialized. Core database components in development.*

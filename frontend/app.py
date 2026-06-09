@@ -318,6 +318,11 @@ st.markdown("""
         <div class="feature-title">Knowledge Graph</div>
         <div class="feature-desc">Interactive 3D-style network diagram mapping subject → predicate → object relationships.</div>
     </div>
+    <div class="feature-card">
+        <span class="feature-icon">💬</span>
+        <div class="feature-title">Chat with Memory</div>
+        <div class="feature-desc">A conversational AI assistant that ONLY answers using verified, trusted facts from the memory store.</div>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -325,12 +330,32 @@ st.markdown("<br>", unsafe_allow_html=True)
 
 # ── Sidebar ─────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("""
-    <div style="padding: 0.5rem 0;">
-        <span class="live-dot"></span>
-        <span style="color: #00b894; font-weight: 600; font-size: 0.85rem;">System Online</span>
-    </div>
-    """, unsafe_allow_html=True)
+    # If the backend is down, display the startup error logs!
+    if not is_port_in_use(8000):
+        st.markdown("""
+        <div style="padding: 0.5rem 0;">
+            <span class="live-dot" style="background: #d63031;"></span>
+            <span style="color: #d63031; font-weight: 600; font-size: 0.85rem;">Backend Offline</span>
+        </div>
+        """, unsafe_allow_html=True)
+        try:
+            if os.path.exists("backend_server.log"):
+                with open("backend_server.log", "r") as f:
+                    logs = f.read()
+                    if logs:
+                        st.error("Backend failed to start. Logs:\n\n" + logs[-1000:])
+                    else:
+                        st.error("Backend not running. Checking logs... (empty)")
+        except Exception:
+            pass
+    else:
+        st.markdown("""
+        <div style="padding: 0.5rem 0;">
+            <span class="live-dot"></span>
+            <span style="color: #00b894; font-weight: 600; font-size: 0.85rem;">System Online</span>
+        </div>
+        """, unsafe_allow_html=True)
+        
     st.markdown("---")
     st.markdown("##### Navigation")
     st.markdown("""
@@ -342,4 +367,5 @@ with st.sidebar:
     - **Explainability** — AI reasoning
     - **Knowledge Graph** — entity map
     - **Testing Playground** — run live testing & reset DB
+    - **Chat with Memory** — conversational Q&A
     """)
