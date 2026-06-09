@@ -47,6 +47,17 @@ def curate_memory_node(state: AgentState) -> AgentState:
             print(f"Curator LLM failed: {e}")
             decision["reason"] = f"Fallback due to error: {str(e)}"
             
+    # Deterministic overrides to guarantee we hit all states for demo purposes
+    if trust_score < 0.2 or claim.source_reliability < 0.2:
+        decision["action"] = "REJECTED"
+        decision["reason"] = "Claim trust score is below minimum threshold (0.2)"
+        decision["confidence_delta"] = 0.0
+    elif trust_score >= 0.8 and contradictions and any(c.get("confidence", 1.0) < 0.5 for c in contradictions):
+        decision["action"] = "FORGOTTEN"
+        decision["reason"] = "Highly reliable new claim invalidates a weak existing memory"
+        decision["confidence_delta"] = 0.0
+
+            
     # Now, apply decision to Database
     db = SessionLocal()
     try:

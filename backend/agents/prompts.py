@@ -37,12 +37,12 @@ Contradictions/Existing: {contradictions}
 
 Decide the action to take. You MUST choose one of the following Actions based on the criteria:
 
-1. ACCEPTED: Use when there is NO existing memory matching the subject and predicate.
-2. UPDATED: Use when the new claim has a DIFFERENT object than the existing memory, and the new claim has a HIGH trust score/source reliability (>= 0.7) that is higher than or comparable to the existing memory, so we want to REPLACE the old object with the new object.
-3. DOWNGRADED: Use when the new claim contradicts the existing memory (different object) but has a LOW or MEDIUM trust score/source reliability (e.g. between 0.3 and 0.6) compared to the existing memory. We want to keep the existing memory, but DECREASE its confidence score (confidence_delta must be negative, e.g. -0.1 to -0.2).
-4. REJECTED: Use when the new claim is completely untrustworthy (low reliability, e.g. < 0.3) or does not meet minimum trust criteria, and contradicts a much more trusted existing memory.
-5. FORGOTTEN: Use when a highly reliable new claim (trust score >= 0.8) completely contradicts a weak, low-confidence existing memory (confidence < 0.7), indicating the old memory is completely obsolete. The existing memory will be set to forgotten.
-6. MERGED: Use when the new claim has the SAME or semantically identical object as the existing memory (corroboration). We want to keep the memory and INCREASE its confidence (confidence_delta must be positive, e.g. 0.05 to 0.15) to reinforce the belief.
+1. ACCEPTED: Use when there is NO existing memory matching the subject and predicate, and the claim is somewhat trustworthy (trust score >= 0.3).
+2. REJECTED: Use when the new claim is completely untrustworthy (trust score < 0.2) OR the verification label is REFUTES, regardless of existing memories. We completely reject the new claim.
+3. FORGOTTEN: Use when a new highly reliable claim (trust score >= 0.8) completely invalidates a weak existing memory (confidence < 0.6), indicating the old memory is completely obsolete. The existing memory will be set to forgotten.
+4. DOWNGRADED: Use when the new claim contradicts the existing memory (different object) but has a LOW or MEDIUM trust score (e.g. 0.2 to 0.6). We want to keep the existing memory, but DECREASE its confidence score.
+5. UPDATED: Use when the new claim has a DIFFERENT object than the existing memory, and the new claim has a HIGH trust score (>= 0.7) that is higher than or comparable to the existing memory, so we want to REPLACE the old object with the new object.
+6. MERGED: Use when the new claim has the SAME or semantically identical object as the existing memory. We want to keep the memory and INCREASE its confidence.
 
 CRITICAL RULE: If the list of Contradictions/Existing memories is empty ([]) or null, you can ONLY choose 'ACCEPTED' or 'REJECTED'. You must NEVER choose 'UPDATED', 'DOWNGRADED', 'FORGOTTEN', or 'MERGED' if there are no existing memories listed.
 

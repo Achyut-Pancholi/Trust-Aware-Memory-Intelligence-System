@@ -166,5 +166,41 @@
     "subject": "Company Z",
     "predicate": "raised_funding",
     "object": "$12M"
+  },
+  {
+    "id": "COMP-015",
+    "timestamp": "2026-06-09T09:10:00Z",
+    "source_id": "TrollAccount2",
+    "source_reliability": 0.05,
+    "verifiable": "UNVERIFIABLE",
+    "label": "REFUTES",
+    "claim": "Company Z is fake",
+    "subject": "Company Z",
+    "predicate": "business_status",
+    "object": "Fake"
+  },
+  {
+    "id": "COMP-016",
+    "timestamp": "2026-06-09T09:15:00Z",
+    "source_id": "OfficialCourtDoc",
+    "source_reliability": 0.99,
+    "verifiable": "VERIFIABLE",
+    "label": "SUPPORTS",
+    "claim": "Company X CEO Charlie was never CEO and his claim is completely false",
+    "subject": "Company X",
+    "predicate": "has_ceo",
+    "object": "Fake Claim"
+  },
+  {
+    "id": "COMP-017",
+    "timestamp": "2026-06-09T09:20:00Z",
+    "source_id": "Bot",
+    "source_reliability": 0.01,
+    "verifiable": "UNVERIFIABLE",
+    "label": "REFUTES",
+    "claim": "CEO of Company X is NOBODY",
+    "subject": "Company X",
+    "predicate": "has_ceo",
+    "object": "NOBODY"
   }
 ]
