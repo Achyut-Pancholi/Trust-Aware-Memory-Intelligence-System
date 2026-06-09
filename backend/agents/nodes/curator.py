@@ -56,6 +56,10 @@ def curate_memory_node(state: AgentState) -> AgentState:
         decision["action"] = "FORGOTTEN"
         decision["reason"] = "Highly reliable new claim invalidates a weak existing memory"
         decision["confidence_delta"] = 0.0
+    elif contradictions and any(c.get("type") == "DUPLICATE_OR_CORROBORATION" for c in contradictions):
+        decision["action"] = "MERGED"
+        decision["reason"] = "A semantically identical memory exists. Merging new source and boosting confidence."
+        decision["confidence_delta"] = 0.05
 
             
     # Now, apply decision to Database
